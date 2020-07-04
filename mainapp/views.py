@@ -266,13 +266,55 @@ def detailRekap(request, idtrx):
 	listunt = []
 
 	for i in drekap:
-		jual = i.harga_jual * i.qty
-		beli = i.harga_beli * i.qty
-		untung = jual - beli
-		listunt.append(untung)
+		if i.status == 'Keluar':
+			jual = i.harga_jual * i.qty
+			beli = i.harga_beli * i.qty
+			untung = jual - beli
+			listunt.append(untung)
 
 	totaluntung = sum(listunt)
 
 	context = {'drekap': drekap, 'act':act, 'totalg':totalg, 'totali':totali, 'totaluntung':totaluntung}
 
 	return render(request, 'admin/detailrekap.html', context)
+
+def laporanPage(request):
+	totaluntung = 0
+	
+	drekap = RekapTransaksi.objects.all()
+
+	rekapFilter = FormRekap()
+
+	itemkeluar = 0
+
+	context = {'rekapFilter':rekapFilter, 'drekap':drekap, 'act':'Laporan Transaksi', 'itemkeluar':itemkeluar}
+
+	return render(request, 'admin/laporan.html', context)
+
+def filterRekap(request):
+	rekapFilter = FormRekap()
+	totaluntung = 0
+	if request.method == 'GET':
+		rekapFilter = FormRekap(request.GET)
+		if rekapFilter.is_valid():
+			bulan = rekapFilter.cleaned_data['bulan']
+			tahun = rekapFilter.cleaned_data['tahun']
+			status = rekapFilter.cleaned_data['status']
+
+			drekap = RekapTransaksi.objects.filter(created_at__year=tahun, status=status, created_at__month=bulan)
+
+			listunt = []
+			if status == 'Keluar':
+				for i in drekap:
+					jual = i.harga_jual * i.qty
+					beli = i.harga_beli * i.qty
+					untung = jual - beli
+					listunt.append(untung)
+
+					totaluntung = sum(listunt)
+
+			itemkeluar = drekap.aggregate(Sum('qty'))
+			tottrans = drekap.order_by('idtrx').annotate(Count('idtrx'))
+
+	context = {'rekapFilter':rekapFilter, 'drekap':drekap, 'act':'Laporan Transaksi', 'itemkeluar':itemkeluar, 'tottrans':tottrans, 'totaluntung':totaluntung}
+	return render(request, 'admin/laporan.html', context)

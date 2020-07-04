@@ -53,7 +53,7 @@
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
               <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Barang Terlaris Hari Ini</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">{% for i in most %} {{i.barang__nama}} {% endfor %}</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{% if most.count == 0 %}Belum ada penjualan{% else %}{% for i in most %} {{i.barang__nama}} {% endfor %}{% endif %}</div>
             </div>
             <div class="col-auto">
               <i class="fas fa-boxes fa-2x text-gray-300"></i>
