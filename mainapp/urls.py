@@ -21,7 +21,4 @@ urlpatterns = [
     path('login/', views.loginPage, name="login"),
     path('register/', views.registerPage, name="register"),
     path('logout/', views.logoutUser, name="logout"),
-    #################################################################################
-    path('laporan/', views.laporanPage, name="laporan"),
-    path('laporan/filter/', views.filterRekap, name="filter")
 ]
