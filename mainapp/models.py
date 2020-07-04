@@ -35,9 +35,11 @@ class Transaksi(models.Model):
 		return self.status
 
 class RekapTransaksi(models.Model):
+	STATUS = (('Keluar', 'Keluar'), ('Masuk', 'Masuk'))
+
 	idtrx = models.CharField(max_length=12, null=True, blank=True)
 	barang = models.ForeignKey(Barang, null=True, on_delete=models.SET_NULL)
-	status = models.CharField(max_length=200, null=True)
+	status = models.CharField(max_length=200, null=True, choices=STATUS)
 	harga_jual = models.IntegerField(null=True, blank=True)
 	harga_beli = models.IntegerField(null=True, blank=True)
 	qty = models.IntegerField(null=True)
