@@ -46,6 +46,6 @@ urlpatterns = [
     path('ajax/transaksi/delete/', views.deleteTransaksi, name="deletetrajax"),
 
     #####################################################################################
-    path('pdf-view-keluar/', views.ViewPDF.as_view(), name="pdfview"),
+    path('pdf-view-keluar/', views.ViewPDF.as_view(), name="pdfviewkeluar"),
     path('pdf-view-masuk/', views.ViewPDFMasuk.as_view(), name="pdfviewmasuk"),
 ]
