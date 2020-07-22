@@ -33,10 +33,22 @@
           <span>Barang</span></a>
       </li>
 
+      <li class="nav-item {% if act == 'Supplier' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'Supplier' %}">
+          <i class="fas fa-truck"></i>
+          <span>Supplier</span></a>
+      </li>
+
       <li class="nav-item {% if act == 'Kategori' %}active{% endif %}">
         <a class="nav-link" href="{% url 'kategori' %}">
           <i class="fa fa-tags"></i>
           <span>Kategori</span></a>
+      </li>
+
+      <li class="nav-item {% if act == 'Harga & Stok' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'hargastok' %}">
+          <i class="fas fa-money-check-alt"></i>
+          <span>Harga & Stok</span></a>
       </li>
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -80,7 +92,7 @@
       </div>
 
       <li class="nav-item {% if act == 'Transaksi' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'transaksi' %}">
+        <a class="nav-link" role="button" data-toggle="modal" data-target="#exampleModal">
           <i class="fa fa-shopping-cart"></i>
           <span>Transaksi</span></a>
       </li>
@@ -89,17 +101,18 @@
           <i class="fas fa-file-signature"></i>
           <span>Rekap Transaksi</span></a>
       </li>
-
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item {% if act == 'Laporan Transaksi' %}active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+          aria-controls="collapsePages">
           <i class="fas fa-fw fa-folder"></i>
           <span>Laporan</span>
         </a>
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <!-- <a class="collapse-item" href="">Mingguan</a> -->
-            <a class="collapse-item {% if act == 'Laporan Transaksi' %}active{% endif %}" href="{% url 'laporan' %}">Bulanan</a>
+            <a class="collapse-item {% if act == 'Laporan Transaksi' %}active{% endif %}"
+              href="{% url 'laporan' %}">Bulanan</a>
             <!-- <a class="collapse-item" href="">Tahunan</a> -->
             <!-- <div class="collapse-divider"></div>
             <h6 class="collapse-header">Other Pages:</h6>
@@ -132,4 +145,32 @@
       </div> -->
     </ul>
     <!-- End of Sidebar -->
-    
+    <!-- Modal -->
+    <style>
+      #button-interaction {
+        width: max-content;
+        height: max-content;
+      }
+    </style>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-center" id="exampleModalLabel">Pilih Tipe Transaksi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="button-interaction" class="mx-auto">
+              <a href="{% url 'transaksikeluar' %}" class="btn btn-outline-danger btn-lg"><i
+                  class="fas fa-sign-out-alt"></i> Barang Keluar</a>
+              <a href="{% url 'transaksimasuk' %}" class="btn btn-outline-success btn-lg ml-4"><i
+                  class="fas fa-sign-in-alt"></i> Barang Masuk</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

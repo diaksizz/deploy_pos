@@ -1,0 +1,21 @@
+<form action="{% url 'upSupplier' formup.instance.pk %}" method="post">
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="exampleInputEmail1">Nama Supplier</label>
+		{{formup.nama}}
+	</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<button type="submit" onclick="return confirm('Apakah data sudah benar?')"
+			class="btn btn-primary">Simpan</button>
+	</div>
+</form>
+
+<script>
+	var input_fields = document.getElementsByTagName('input')
+
+	for (var field in input_fields) {
+		input_fields[field].className += ' form-control'
+	}
+</script>

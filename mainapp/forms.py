@@ -10,29 +10,59 @@ class FormTransaksi(ModelForm):
 		model = Transaksi
 		fields = '__all__'
 
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['supplier'].queryset = SupplierRelationship.objects.none()
+
+		if 'barang' in self.data:
+			try:
+				barangid = int(self.data.get('barang'))
+				print(SupplierRelationship.objects.filter(barang_id=barangid))
+				self.fields['supplier'].queryset = Supplier.objects.all()
+			except (ValueError, TypeError):
+				pass  # invalid input from the client; ignore and fallback to empty City queryset
+		elif self.instance.pk:
+			self.fields['supplier'].queryset = self.instance.barang.supplier_set
+#################barang########################
 class FormBarang(ModelForm):
 	class Meta:
 		model = Barang
 		fields = '__all__'
 
 class FormEditBarang(ModelForm):
-	pk = forms.IntegerField()
 	class Meta:
 		model = Barang
 		fields = '__all__'
-
+############# kategori #######################
 class FormKategori(ModelForm):
 	class Meta:
 		model = Kategori
 		fields = '__all__'
 
 class FormEditKategori(ModelForm):
-	pk = forms.IntegerField()
 	class Meta:
 		model = Kategori
 		fields = '__all__'
 
+############## supplier #########################
+
+class FormSupplier(ModelForm):
+	class Meta:
+		model = Supplier
+		fields = '__all__'
+
+class FormEditSupplier(ModelForm):
+	class Meta:
+		model = Supplier
+		fields = '__all__'
+		
+############### user #############################
 class CreateUserForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = ['username', 'email', 'password1', 'password2']
+
+class UpdateUserForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = ['username', 'email', 'password1', 'password2']
@@ -65,7 +95,9 @@ class FormRekap(forms.Form):
 	STATUS=(
 		('', '----------'),
 		("Keluar", "Keluar"),
-		("Masuk", "Masuk")) 
+		("Masuk", "Masuk"),
+		("Semua", "Semua")
+		) 
 
 	bulan = forms.ChoiceField(choices=BULAN, required=False)
 	tahun = forms.ChoiceField(choices=TAHUN, required=False)

@@ -1,0 +1,140 @@
+{% load humanize %}
+{% for message in messages %}
+<script>
+  $(document).ready(function () {
+    $("#modal-selesai").modal('show');
+
+  });
+</script>
+<script>
+  $('#print').click(function () {
+    // You can use `this` to refer to the source element, for instance:
+    window.open("http://localhost:8000/pdf-view-keluar/");
+  });
+</script>
+<div id="modal-selesai" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Transaksi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          {{message}}
+        </div>
+        <button id=print style="float: right;" type="submit" class="btn btn-primary"> Print</button>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+{% endfor %}
+<table id="tabletransaksi" class="table table-bordered table-striped w-100" style="color: black;">
+  <thead>
+    <tr>
+      <th scope="col">Nama Barang</th>
+      <th scope="col">Kategori</th>
+      <th scope="col">Supplier</th>
+      <th scope="col">Harga</th>
+      <th scope="col">Status</th>
+      <th scope="col">Qty</th>
+      <th scope="col">Sub Total</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in dtransaksi %}
+    <tr>
+      <td>{{i.barang}}</td>
+      <td>{{i.barang.kategori}}</td>
+      <td>{{i.supplier}}</td>
+      <td>Rp.{{i.harga|intcomma}}</td>
+      <td>{{i.status}}</td>
+      <td>{{i.qty}}</td>
+      <td>Rp.{{i.total|intcomma}}</td>
+      <td>
+        <button id="deletebtn" onclick="return confirm('Yakin ingin menghapus {{i.barang}} dari transaksi?')"
+          class="btn btn-danger btn-sm" data-id="{{i.id}}" data-delete-url="{% url 'deletetrajax' %}">Hapus</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  $("#deletebtn").click(function () {
+    console.log("modalopened")
+    var button = $('#deletebtn');
+    var url = button.attr("data-delete-url");
+    var barangid = button.data('id');
+
+    $.ajax({ // initialize an AJAX request
+      url: url, // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'barang': barangid // add the country id to the GET parameters
+      },
+      success: function (data) {
+        var urlreload = $("#tabletransaksi_wrap").attr("data-table-url");
+
+        $.ajax({
+          url: urlreload,
+          success: function (data) {
+            $("#tabletransaksi_wrap").html(data);
+          }
+        });
+
+        var urltotal = $("#total_wrap").attr("data-total-url");
+
+        $.ajax({
+          url: urltotal,
+          success: function (data) {
+            $("#total_wrap").html(data);
+          }
+        });
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    var table = $('#tabletransaksi').DataTable({
+      "order": [
+        [3, "desc"]
+      ],
+      "columnDefs": [{
+        "orderable": false,
+        "searchable": false,
+        "targets": 6
+      }],
+      buttons: [{
+          extend: 'print',
+          exportOptions: {
+            columns: ':visible',
+          },
+          customize: function (win) {
+            $(win.document.body).append(
+              $('<div>').prop({
+                id: 'tambahan',
+                innerHTML: 'Total Belanja: ' + total,
+              }));
+          }
+        },
+        'colvis',
+      ],
+      "aLengthMenu": [
+        [5, 10, 25, -1],
+        [5, 10, 25, "All"]
+      ],
+      "iDisplayLength": 10
+    });
+
+    table.buttons().container()
+      .appendTo('#tabletransaksi_wrapper .col-md-6:eq(0)');
+  });
+</script>

@@ -1,0 +1,4 @@
+<option value="" selected>---------</option>
+{% for i in suppliers %}
+<option value="{{ i.supplier.id }}">{{ i.supplier.nama }}</option>
+{% endfor %}

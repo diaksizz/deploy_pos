@@ -1,0 +1,94 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        td,
+        th {
+
+            text-align: center;
+        }
+
+        @page {
+            size: a4 portrait;
+
+            @frame header_frame {
+                /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 50pt;
+                width: 512pt;
+                top: 50pt;
+                height: 40pt;
+            }
+
+            @frame content_frame {
+                /* Content Frame */
+                left: 50pt;
+                width: 512pt;
+                top: 90pt;
+                height: 632pt;
+            }
+
+            @frame footer_frame {
+                /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 50pt;
+                width: 512pt;
+                top: 772pt;
+                height: 20pt;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <center><b>TOKO SEADANYA</b></center>
+    <center>
+        <P>Jl.Denmark no.72 KOTA KEDIRI</P>
+    </center>
+    <center>
+        <P>No.Telp : 0820862375649</P>
+    </center>
+    <h3>Nama Kasir : {{user}}</h3>
+    <p>No.Struk : {{tgl.idtrx}} </p>
+    <p>Tanggal : {{tgl.created_at| date:'d F Y, H:i'}} </p>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Qty</th>
+                <th>Status</th>
+                <th>Nama Barang</th>
+                <th>Supplier</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Sub Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for i in trx %}
+                <td>{{i.qty}}</td>
+                <td>{{i.status}}</td>
+                <td>{{i.barang}}</td>
+                <td>{{i.supplier}}</td>
+                <td>{{i.kategori}}</td>
+                <td>Rp.{{i.harga_jual|intcomma }}</td>
+                <td>Rp.{{i.total|intcomma }}</td>
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <hr>
+
+    <p style="text-align:right;"><strong>Total:&nbsp;&nbsp;&nbsp;Rp.{{totalg.total__sum|intcomma}}</strong></p>
+    <hr>
+    <center><b>TERIMA KASIH ATAS KUNJUNGAN ANDA</b></center>
+    <center>
+        <P>Barang yang sudah dibeli tidak dapat ditukar atau Kembalikan</P>
+    </center>
+</body>
+
+</html>

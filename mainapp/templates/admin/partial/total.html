@@ -1,0 +1,45 @@
+{% load humanize %}
+<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Transaksi</div>
+<div id="total" class="h5 mb-0 font-weight-bold text-gray-800">Rp.{% if total.total__sum == None %} 0{% else %}
+	{{total.total__sum|intcomma}}{% endif %}</div>
+
+<div id="kembalian_wrap" class="{% if status.status == 'Keluar' %}{% else %}d-none{% endif %}">
+	<hr>
+	<input id="totalforkembalian" type="hidden" value="{{total.total__sum}}">
+	<div class="input-group mb-2">
+		<div class="input-group-prepend">
+			<span class="input-group-text" id="basic-addon2">Rp</span>
+		</div>
+		<input type="number" min="0" id="totalcash" class="form-control" aria-describedby="basic-addon2"
+			placeholder="0">
+	</div>
+	<div class="input-group mb-2">
+		<div class="input-group-prepend">
+			<span class="input-group-text" id="basic-addon3">Rp</span>
+		</div>
+		<input type="text" id="totalkembalian" class="form-control" aria-describedby="basic-addon3" disabled
+			placeholder="0">
+	</div>
+	<button id="hitungkembalian" class="btn btn-success btn-sm">Hitung</button>
+</div>
+<script>
+	$(document).ready(function () {
+		$("#hitungkembalian").click(function () {
+			console.log('test')
+			var total = $("#totalforkembalian").val()
+			var cash = $("#totalcash").val()
+
+			var kembalian = cash - total
+			console.log(cash)
+			console.log(total)
+			console.log(kembalian)
+
+			if (parseInt(cash) < parseInt(total)) {
+				return alert("Uang bayar kurang!")
+			} else {
+				return $('#totalkembalian').val(kembalian)
+			}
+		});
+		var total = $("#total").html();
+	})
+</script>

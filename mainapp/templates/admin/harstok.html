@@ -1,0 +1,81 @@
+{%  extends 'admin/main.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+ <div class="container-fluid">
+          <!-- Page Heading -->
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Harga & Stok</h1>
+		<!-- <button type="button" data-toggle="modal" data-target="#barangModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus"></i> Add Barang</button> -->
+	</div>
+</div>
+<style>
+	#tablebarang_filter{
+		float: right;
+	}
+	#tablebarang_paginate{
+		float: right;
+	}
+</style>
+<div class="container-fluid">
+	<div class="table-responsive">
+		<table id="tableharstok" class="table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>Barang</th>
+					<th>Supplier</th>
+					<th>Stok</th>
+					<th>Harga Jual</th>
+					<th>Harga Beli</th>
+					<th>Ditambahkan Tanggal</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in dhargastok %}
+				<tr>
+					<td>{{i.barang.nama}}</td>
+					<td>{{i.supplier.nama}}</td>
+					<td>{{i.stok}}</td>
+					<td id="harga_jual_bos">Rp.{{i.harga_jual|intcomma}}</td>
+					<td>Rp.{{i.harga_beli|intcomma}}</td>
+					<td>{{i.updated_at|date:'d F Y, H:i e'}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+
+	    var table = $('#tableharstok').DataTable( {
+	    // 	"columnDefs": [
+			  //   { "orderable": false, "searchable": false, "targets": 2 }
+			  // ],
+	        buttons:[	
+	        			{
+		                  extend: 'excelHtml5',
+		                    exportOptions: {
+		                        columns: ':visible'
+		                    }
+		                },
+
+                		{
+	            			extend: 'print',
+			                exportOptions: {
+			                    columns: ':visible'
+	                		}
+                		},
+                		'colvis',
+        			],
+        	"aLengthMenu": [[5,10,25,-1],[5,10,25, "All"]],
+			"iDisplayLength": 10
+	    } );
+	 
+	    table.buttons().container()
+	        .appendTo( '#tableharstok_wrapper .col-md-6:eq(0)' );
+	} );
+</script>
+{% endblock %}

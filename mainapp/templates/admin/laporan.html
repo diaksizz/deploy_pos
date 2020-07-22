@@ -95,13 +95,13 @@
 				{% for i in drekap %}
 		      <tr>
 		        <td>{{i.barang}}</td>
-		        <td>{{i.barang.kategori}}</td>
+		        <td>{{i.kategori}}</td>
 		        <td>Rp.{{i.harga_jual|intcomma }}</td>
 		        <td>Rp.{{i.harga_beli|intcomma }}</td>
 		        <td>{{i.status}}</td>
 				<td>{{i.qty}}</td>
 				<td>Rp.{{i.total|intcomma }}</td>
-				<td>{{i.created_at.date}}</td>
+				<td>{{i.created_at|date:'d F Y, H:i e'}}</td>
 		      </tr>
 		    {% endfor %}
 			</tbody>
@@ -115,13 +115,32 @@
 		$('select').addClass('form-control');
 		$('select').attr('required', 'required')
 
-		$('#tablelaporan').DataTable({
-			"columnDefs": [
-			    { "orderable": false, "searchable": false, "targets": 1 }
+		var table = $('#tablelaporan').DataTable( {
+	    	"columnDefs": [
+			    { "orderable": false, "searchable": false, "targets": 2 }
 			  ],
-			"aLengthMenu": [[10,25,-1],[10,25, "All"]],
-			"iDisplayLength": 10
-		});
-	});
+	        buttons:[	
+	        			{
+		                  extend: 'excelHtml5',
+		                    exportOptions: {
+		                        columns: ':visible'
+		                    }
+		                },
+
+                		{
+	            			extend: 'print',
+			                exportOptions: {
+			                    columns: ':visible'
+	                		}
+                		},
+                		'colvis',
+        			],
+        	"aLengthMenu": [[5,10,25,-1],[5,10,25, "All"]],
+			"iDisplayLength": 5
+	    } );
+	 
+	    table.buttons().container()
+	        .appendTo( '#tablelaporan_wrapper .col-md-6:eq(0)' );
+	} );
 </script>
 {% endblock %}

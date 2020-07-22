@@ -1,0 +1,33 @@
+{%  extends 'admin/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+	    <form form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group">
+                  
+                  
+                  {{formup.as_p}}
+                
+                </div>
+                <input  type="submit" value="Update" class="btn btn-primary btn-user btn-block">
+                <hr>
+              </form>
+</div>
+
+<script type="text/javascript">
+	//Query All input fields
+var select_fields = document.getElementsByTagName('select')
+
+var input_fields = document.getElementsByTagName('input')
+
+
+for (var field in select_fields){
+  select_fields[field].className += ' form-control'
+}
+for (var field in input_fields){
+  input_fields[field].className += ' form-control'
+}
+</script>     
+{% endblock %}

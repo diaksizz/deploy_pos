@@ -1,0 +1,28 @@
+<form action="{% url 'upKategori' formup.instance.pk %}" method="post">
+	{% csrf_token %}
+	{{formup.pk.as_hidden}}
+	<div class="form-group">
+		<label for="exampleInputEmail1">Nama Kategori</label>
+		{{formup.nama}}
+	</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<button type="submit" onclick="return confirm('Apakah data sudah benar?')"
+			class="btn btn-primary">Simpan</button>
+	</div>
+</form>
+
+<script>
+	var select_fields = document.getElementsByTagName('select')
+
+	var input_fields = document.getElementsByTagName('input')
+
+
+	for (var field in select_fields) {
+		select_fields[field].className += ' form-control'
+	}
+	for (var field in input_fields) {
+		input_fields[field].className += ' form-control'
+	}
+</script>
